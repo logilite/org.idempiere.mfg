@@ -617,13 +617,11 @@ public class MPPOrder extends X_PP_Order implements DocAction
 			return ;
 		}
 		BigDecimal ordered = difference;
-		
-		int M_Locator_ID = getM_Locator_ID(ordered);
 		// Necessary to clear order quantities when called from closeIt - 4Layers
 		if (DOCACTION_Close.equals(getDocAction()))
 		{
-			if (!MStorageOnHand.add(getCtx(), getM_Warehouse_ID(), M_Locator_ID,
-					getM_Product_ID(), getM_AttributeSetInstance_ID(), ordered, get_TrxName()))
+			if (!MStorageReservation.add (getCtx(), getM_Warehouse_ID(), getM_Product_ID(), 
+					getM_AttributeSetInstance_ID(), ordered, false, get_TrxName()))
 			{
 				throw new AdempiereException();
 			}
@@ -631,8 +629,8 @@ public class MPPOrder extends X_PP_Order implements DocAction
 		else
 		{
 			//	Update Storage
-			if (!MStorageOnHand.add(getCtx(), getM_Warehouse_ID(), M_Locator_ID,
-					getM_Product_ID(), getM_AttributeSetInstance_ID(), ordered, get_TrxName()))
+			if (!MStorageReservation.add(getCtx(), getM_Warehouse_ID(), getM_Product_ID(), 
+					getM_AttributeSetInstance_ID(), ordered, false, get_TrxName()))
 			{
 				throw new AdempiereException();
 			}
@@ -714,6 +712,7 @@ public class MPPOrder extends X_PP_Order implements DocAction
 		
 		createStandardCosts();
 				
+		//TODO verify this
 		//Create the Activity Control
 		autoReportActivities();
 
