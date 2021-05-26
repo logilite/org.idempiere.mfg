@@ -32,6 +32,7 @@ import org.compiere.minigrid.IMiniTable;
 import org.compiere.model.MAttributeSetInstance;
 import org.compiere.model.MProduct;
 import org.compiere.model.MStorageOnHand;
+import org.compiere.model.MUOMConversion;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
@@ -329,7 +330,8 @@ public class OrderReceiptIssue extends GenForm {
 				+ "obl.QtyBatch," // 17
 				+ "obl.ComponentType," // 18
 				+ "obl.QtyRequired - QtyDelivered AS QtyOpen," // 19
-				+ "obl.QtyDelivered" // 20
+				+ "obl.QtyDelivered," // 20
+				+ "obl.C_UOM_ID" //21
 				+ " FROM PP_Order_BOMLine obl"
 				+ " INNER JOIN M_Product p ON (obl.M_Product_ID = p.M_Product_ID) "
 				+ " INNER JOIN C_UOM u ON (p.C_UOM_ID = u.C_UOM_ID) "
@@ -368,7 +370,12 @@ public class OrderReceiptIssue extends GenForm {
 				BigDecimal componentScrapQty = Env.ZERO;
 				BigDecimal componentQtyReq = Env.ZERO;
 				BigDecimal componentQtyToDel = Env.ZERO;
-
+				
+				int prodUOM_ID = rs.getInt(6);
+				int OBLUOM_ID = rs.getInt(21);
+				BigDecimal rate = MUOMConversion.getRate(OBLUOM_ID,prodUOM_ID);
+				qtyBom = qtyBom.multiply(rate).setScale(10, BigDecimal.ROUND_HALF_DOWN);
+				//qtyRequired = qtyRequired.multiply(rate).setScale(10);
 				id.setSelected(isOnlyReceipt());
 
 				issue.setValueAt(id, row, 0); // PP_OrderBOMLine_ID
