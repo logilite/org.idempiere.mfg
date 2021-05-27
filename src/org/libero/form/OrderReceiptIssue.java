@@ -382,9 +382,14 @@ public class OrderReceiptIssue extends GenForm {
 				toDeliverQty =toDeliverQty.multiply(FGRate);
 				int prodUOM_ID = rs.getInt(6);
 				int OBLUOM_ID = rs.getInt(21);
-				BigDecimal rate = MUOMConversion.getRate(OBLUOM_ID,prodUOM_ID);
+				int M_Product_ID = rs.getInt(4);
+				//BigDecimal rate = MUOMConversion.getRate(OBLUOM_ID,prodUOM_ID);
+				//multiplier to convert component UOM to Product UOM
+				BigDecimal rate = BigDecimal.ONE;
+				if(prodUOM_ID != OBLUOM_ID)		
+					rate = MUOMConversion.getProductRateFrom(Env.getCtx(), M_Product_ID, OBLUOM_ID);
+
 				qtyBom = qtyBom.multiply(rate).setScale(10, BigDecimal.ROUND_HALF_DOWN);
-				//qtyRequired = qtyRequired.multiply(rate).setScale(10);
 				id.setSelected(isOnlyReceipt());
 
 				issue.setValueAt(id, row, 0); // PP_OrderBOMLine_ID
