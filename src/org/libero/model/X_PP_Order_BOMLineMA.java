@@ -179,9 +179,9 @@ public class X_PP_Order_BOMLineMA extends PO implements I_PP_Order_BOMLineMA, I_
 		return bd;
 	}
 
-	public org.eevolution.model.I_PP_Order_BOMLine getPP_Order_BOMLine() throws RuntimeException
+	public org.libero.tables.I_PP_Order_BOMLine getPP_Order_BOMLine() throws RuntimeException
 	{
-		return (org.eevolution.model.I_PP_Order_BOMLine) MTable
+		return (org.libero.tables.I_PP_Order_BOMLine) MTable
 				.get(getCtx(), org.eevolution.model.I_PP_Order_BOMLine.Table_Name)
 				.getPO(getPP_Order_BOMLine_ID(), get_TrxName());
 	}

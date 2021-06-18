@@ -157,7 +157,7 @@ public interface I_PP_Order_BOMLineMA
 	/** Get Manufacturing Order BOM Line */
 	public int getPP_Order_BOMLine_ID();
 
-	public org.eevolution.model.I_PP_Order_BOMLine getPP_Order_BOMLine() throws RuntimeException;
+	public org.libero.tables.I_PP_Order_BOMLine getPP_Order_BOMLine() throws RuntimeException;
 
 	/** Column name PP_Order_BOMLineMA_UU */
 	public static final String COLUMNNAME_PP_Order_BOMLineMA_UU = "PP_Order_BOMLineMA_UU";
